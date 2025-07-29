@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "TicTacToeApp",
+      "request": "launch",
+      "mainClass": "src.TicTacToeApp",
+      "projectName": "Tictactoe_91014284"
+    },
+    {
+      "type": "java",
+      "name": "TicTacToeApp",
+      "request": "launch",
+      "mainClass": "src.TicTacToeApp",
+      "projectName": "Tictactoe_7b7c9006",
+      "vmArgs": "--module-path C:/Users/ltria/Desktop/ProyectosJava/javafx-sdk-21.0.7/lib --add-modules javafx.controls"
+    }
+  ]
+}
