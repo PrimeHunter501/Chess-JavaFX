@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.List;
+
 public class Tablero {
     private Pieza[][] tablero;
 
@@ -20,5 +22,84 @@ public class Tablero {
     public void colocarPieza(Pieza pieza, int x, int y) {
         tablero[x][y] = pieza;
     }
+
+    public void moverPieza(int fromX, int fromY, int toX, int toY) {
+        Pieza p = obtenerPieza(fromX, fromY);
+        tablero[toX][toY] = p;
+        tablero[fromX][fromY] = null;
+    }
+
+    /**
+     * Encuentra la posición del rey del color dado. Devuelve null si no se encuentra.
+     */
+    public Posicion obtenerPosicionRey(boolean esBlanca) {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                Pieza p = obtenerPieza(x, y);
+                if (p instanceof Rey && p.esBlanca() == esBlanca) {
+                    return new Posicion(x, y);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determina si el rey del color dado está en jaque.
+     */
+    public boolean estaEnJaque(boolean reyEsBlanca) {
+        Posicion posRey = obtenerPosicionRey(reyEsBlanca);
+        if (posRey == null) {
+            // Opcional: lanzar excepción o considerar que no hay rey (estado inválido)
+            return false;
+        }
+
+        // Recorremos todas las piezas enemigas y vemos si alguna puede atacar la casilla del rey
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                Pieza p = obtenerPieza(x, y);
+                if (p != null && p.esBlanca() != reyEsBlanca) {
+                    List<Posicion> ataques = p.movimientosValidos(this, x, y);
+                    for (Posicion atacando : ataques) {
+                        if (atacando.equals(posRey)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public Tablero copiar() {
+        Tablero copia = new Tablero();
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                Pieza p = this.obtenerPieza(x, y);
+                if (p != null) {
+                    // Asume que las piezas no tienen estado mutable complejo; se puede clonar por tipo básico.
+                    if (p instanceof Rey) copia.colocarPieza(new Rey(p.esBlanca()), x, y);
+                    else if (p instanceof Reina) copia.colocarPieza(new Reina(p.esBlanca()), x, y);
+                    else if (p instanceof Torre) copia.colocarPieza(new Torre(p.esBlanca()), x, y);
+                    else if (p instanceof Alfil) copia.colocarPieza(new Alfil(p.esBlanca()), x, y);
+                    else if (p instanceof Caballo) copia.colocarPieza(new Caballo(p.esBlanca()), x, y);
+                    else if (p instanceof Peon) copia.colocarPieza(new Peon(p.esBlanca()), x, y);
+                    else {
+                        // por si hay otras piezas futuras
+                        copia.colocarPieza(p, x, y);
+                    }
+                }
+            }
+        }
+        return copia;
+    }
+
+    public void aplicarMovimiento(Movimiento m) {
+        Pieza p = obtenerPieza(m.fromX, m.fromY);
+        tablero[m.toX][m.toY] = p;
+        tablero[m.fromX][m.fromY] = null;
+    }
+
 }
 
