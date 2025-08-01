@@ -45,12 +45,28 @@ public class Peon extends Pieza {
         return movimientos;
     }
 
-    /**
-     * Retorna una nueva pieza en lugar del peón al promocionar.
-     * En el futuro podemos reemplazar esto con una selección real de pieza.
-     
-    public Pieza obtenerPiezaPromocionada() {
-        // Por ahora devolvemos una nueva instancia de Pieza anónima (simulando una Reina, por ejemplo).
-        return new Pieza(this.esBlanca);
-    */
+    public enum TipoPromocion {
+        REINA,
+        TORRE,
+        ALFIL,
+        CABALLO
+    }
+
+    public Pieza obtenerPiezaPromocionada(TipoPromocion tipo) {
+        switch (tipo) {
+            case REINA:
+                return new Reina(this.esBlanca());
+            case TORRE:
+                return new Torre(this.esBlanca());
+            case ALFIL:
+                return new Alfil(this.esBlanca());
+            case CABALLO:
+                return new Caballo(this.esBlanca());
+            default:
+                // por seguridad, devolver reina
+                return new Reina(this.esBlanca());
+        }
+    }
+
+    
 }
