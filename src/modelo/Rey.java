@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Rey extends Pieza {
 
+    private boolean haMovido = false;
+
     public Rey(boolean esBlanca) {
         super(esBlanca);
     }
@@ -39,5 +41,13 @@ public class Rey extends Pieza {
         // Nota: el enroque y la verificación de si el rey quedaría en jaque se implementan después.
 
         return movimientos;
+    }
+
+    public boolean haMovido() {
+        return haMovido;
+    }
+
+    public void marcarMovido() {
+        this.haMovido = true;
     }
 }

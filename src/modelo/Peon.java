@@ -45,6 +45,12 @@ public class Peon extends Pieza {
         return movimientos;
     }
 
+    public boolean debePromocionar(int y){
+        if(this.esBlanca == true && y == 7) return true;
+        if(this.esBlanca == false && y == 0) return true;
+        return false;
+    }
+
     public enum TipoPromocion {
         REINA,
         TORRE,

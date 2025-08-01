@@ -100,6 +100,22 @@ public class Tablero {
         tablero[m.toX][m.toY] = p;
         tablero[m.fromX][m.fromY] = null;
     }
+    public boolean estaAtacada(int x, int y, boolean porBlancas) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Pieza p = obtenerPieza(i, j);
+                if (p != null && p.esBlanca() == porBlancas) {
+                    List<Posicion> ataques = p.movimientosValidos(this, i, j);
+                    for (Posicion pos : ataques) {
+                        if (pos.x == x && pos.y == y) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 }
 

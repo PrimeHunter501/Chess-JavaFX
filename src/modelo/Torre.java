@@ -5,6 +5,10 @@ import java.util.List;
 
 public class Torre extends Pieza {
 
+    private boolean haMovido = false;
+
+
+
     public Torre(boolean esBlanca) {
         super(esBlanca);
     }
@@ -49,6 +53,14 @@ public class Torre extends Pieza {
         }
 
         return movimientos;
+    }
+
+    public boolean haMovido() {
+        return haMovido;
+    }
+
+    public void marcarMovido() {
+        this.haMovido = true;
     }
 }
 
