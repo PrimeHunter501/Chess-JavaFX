@@ -3,7 +3,6 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.Peon.TipoPromocion;
 
 public class Juego {
     private Tablero tablero;
@@ -51,6 +50,30 @@ public class Juego {
         }
 
         return legales;
+    }
+
+    /**
+     * Ejecuta un movimiento si es legal y cambia el turno.
+     * Devuelve true si se pudo hacer.
+     */
+    public boolean hacerMovimiento(Movimiento m) {
+        Pieza p = tablero.obtenerPieza(m.fromX, m.fromY);
+        if (p == null) return false;
+        if (p.esBlanca() != turnoBlanco) return false;
+
+        List<Movimiento> legales = movimientosLegales(turnoBlanco);
+        boolean permitido = false;
+        for (Movimiento mv : legales) {
+            if (mv.fromX == m.fromX && mv.fromY == m.fromY && mv.toX == m.toX && mv.toY == m.toY) {
+                permitido = true;
+                break;
+            }
+        }
+        if (!permitido) return false;
+
+        tablero.aplicarMovimiento(m);
+        cambiarTurno();
+        return true;
     }
 
     /**

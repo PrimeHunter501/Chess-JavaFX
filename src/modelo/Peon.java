@@ -51,12 +51,7 @@ public class Peon extends Pieza {
         return false;
     }
 
-    public enum TipoPromocion {
-        REINA,
-        TORRE,
-        ALFIL,
-        CABALLO
-    }
+    
 
     public Pieza obtenerPiezaPromocionada(TipoPromocion tipo) {
         switch (tipo) {
