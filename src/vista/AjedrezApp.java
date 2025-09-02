@@ -139,15 +139,24 @@ public class AjedrezApp extends Application {
         sel.getChildren().add(borde);
     }
 
+
     private void limpiarResaltados() {
-        for (int x = 0; x < 8; x++)
+        for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 StackPane s = casillas[x][y];
-                // conservar solo la primera (fondo) y la etiqueta de pieza
-                s.getChildren().removeIf(node -> !(node instanceof Rectangle) || ((Rectangle) node).getStroke() != null || node instanceof Label);
-                // luego volver a colocar pieza label para evitar borrado accidental
-                // (simplificación: se redibuja completo en actualizarVista)
+                var children = s.getChildren();
+
+                // Recorremos al revés para eliminar sin desordenar índices
+                for (int i = children.size() - 1; i >= 0; i--) {
+                    var n = children.get(i);
+
+                    // Mantén solo el fondo (índice 0) y la etiqueta de pieza
+                    if (i == 0) continue;           // fondo
+                    if (n instanceof Label) continue; // pieza
+                    children.remove(i);             // elimina overlays (verde, azul, etc.)
+                }
             }
+        }
     }
 
     private void actualizarVista() {
@@ -208,10 +217,7 @@ public class AjedrezApp extends Application {
 
     private void inicializarPosicionInicial() {
         Tablero t = juego.getTablero();
-        // posición clásica simplificada: solo algunos ejemplos para desarrollo
-        // puedes extender a la posición completa estándar
-
-        // Rey y reina
+        
         t.colocarPieza(new Torre(true), 0, 7);
         t.colocarPieza(new Caballo(true), 1, 7);
         t.colocarPieza(new Alfil(true), 2, 7);

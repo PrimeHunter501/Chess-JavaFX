@@ -1,0 +1,2 @@
+javac --module-path "C:\Users\ltria\Desktop\ProyectosJava\javafx-sdk-21.0.7\lib" --add-modules javafx.controls,javafx.fxml -d out src\modelo\*.java src\vista\*.java
+java --module-path "C:\Users\ltria\Desktop\ProyectosJava\javafx-sdk-21.0.7\lib" --add-modules javafx.controls,javafx.fxml -cp out vista.AjedrezApp

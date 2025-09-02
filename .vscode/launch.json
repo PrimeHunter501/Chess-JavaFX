@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "AjedrezApp",
+      "request": "launch",
+      "mainClass": "vista.AjedrezApp",
+      "projectName": "chessgame_42396594"
+    },
+    {
+      "type": "java",
       "name": "TicTacToeApp",
       "request": "launch",
       "mainClass": "src.TicTacToeApp",
