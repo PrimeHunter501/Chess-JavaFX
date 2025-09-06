@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
@@ -100,7 +101,7 @@ public class AjedrezApp extends Application {
                 // movimiento ilegal, opcional mostrar aviso
             } else {
                 // detectar promoción simple: si hay un peón que debe promocionar, mostrar diálogo
-                verificarPromocionAutomatica(mov);
+                verificarPromocion(mov);
             }
             seleccionada = null;
             limpiarResaltados();
@@ -201,19 +202,27 @@ public class AjedrezApp extends Application {
         a.show();
     }
 
-    
-    private void verificarPromocionAutomatica(Movimiento m) {
-        Pieza destino = juego.getTablero().obtenerPieza(m.toX, m.toY);
-        if (destino instanceof Peon) {
-            Peon peon = (Peon) destino;
+    private void verificarPromocion(Movimiento m) {
+        Pieza p = juego.getTablero().obtenerPieza(m.toX, m.toY);
+        if (p instanceof Peon) {
+            Peon peon = (Peon) p;
             if (peon.debePromocionar(m.toY)) {
-                // simplificación: siempre promociona a reina. Aquí podrías mostrar un diálogo para elegir.
-                TipoPromocion tipo = TipoPromocion.REINA;
-                Pieza promocionada = peon.obtenerPiezaPromocionada(tipo);
-                juego.getTablero().colocarPieza(promocionada, m.toX, m.toY);
+                // Mostrar desplegable
+                ChoiceDialog<TipoPromocion> dialog = new ChoiceDialog<>(TipoPromocion.REINA,
+                        TipoPromocion.values());
+                dialog.setTitle("Promoción de Peón");
+                dialog.setHeaderText("Elige la pieza para promocionar:");
+                dialog.setContentText("Pieza:");
+
+                dialog.showAndWait().ifPresent(tipo -> {
+                    Pieza nueva = peon.obtenerPiezaPromocionada(tipo);
+                    juego.getTablero().colocarPieza(nueva, m.toX, m.toY);
+                    actualizarVista(); // refrescar el tablero
+                });
             }
         }
     }
+
 
     private void inicializarPosicionInicial() {
         Tablero t = juego.getTablero();

@@ -46,9 +46,7 @@ public class Peon extends Pieza {
     }
 
     public boolean debePromocionar(int y){
-        if(this.esBlanca == true && y == 7) return true;
-        if(this.esBlanca == false && y == 0) return true;
-        return false;
+        return (!esBlanca() && y == 7) || (esBlanca() && y == 0);
     }
 
     
@@ -56,13 +54,13 @@ public class Peon extends Pieza {
     public Pieza obtenerPiezaPromocionada(TipoPromocion tipo) {
         switch (tipo) {
             case REINA:
-                return new Reina(this.esBlanca());
+                return new Reina(esBlanca());
             case TORRE:
-                return new Torre(this.esBlanca());
+                return new Torre(esBlanca());
             case ALFIL:
-                return new Alfil(this.esBlanca());
+                return new Alfil(esBlanca());
             case CABALLO:
-                return new Caballo(this.esBlanca());
+                return new Caballo(esBlanca());
             default:
                 // por seguridad, devolver reina
                 return new Reina(this.esBlanca());
